@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DemoAir — Cabin Crew Training Portal (MOCK)</title>
+  <style>
+    :root{
+      --bg:#f4f7fb; --card:#ffffff; --accent:#0b6bd6; --muted:#6b7280;
+      --danger:#b91c1c;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#eef6ff 0%,var(--bg) 100%);color:#111827}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    .brand{display:flex;flex-direction:column}
+    .brand h1{margin:0;font-size:18px;letter-spacing:0.2px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    .mock-badge{background:#fde68a;padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px;color:#92400e}
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:18px}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(15,23,42,0.06)}
+    /* Sidebar / Login */
+    .sidebar .login-box{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    input[type="text"],input[type="password"],select{
+      width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px
+    }
+    button{background:var(--accent);border:none;color:white;padding:10px 12px;border-radius:8px;font-weight:600;cursor:pointer}
+    button.secondary{background:#eef2ff;color:var(--accent);border:1px solid #dbeafe}
+    .muted{color:var(--muted);font-size:13px}
+    /* Dashboard */
+    .top-actions{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .welcome{font-size:20px;margin:6px 0}
+    .small{font-size:13px;color:var(--muted)}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .tile{flex:1;min-width:180px;padding:14px;border-radius:10px;background:linear-gradient(180deg,#ffffff,#fbfdff);box-shadow:0 3px 10px rgba(2,6,23,0.03)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;text-align:left;border-bottom:1px solid #f1f5f9;font-size:14px}
+    th{color:var(--muted);font-weight:600}
+    .status{padding:6px 8px;border-radius:999px;font-weight:700;font-size:12px}
+    .status.on{background:#ecfdf5;color:#065f46}
+    .status.del{background:#fff7ed;color:#92400e}
+    .status.off{background:#fef2f2;color:#7f1d1d}
+    footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+    /* Responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.brand h1{font-size:16px}}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#083893);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px">DA</div>
+        <div class="brand">
+          <h1>DemoAir Cabin Crew Portal</h1>
+          <p class="muted">MOCK — For training and UI prototyping only. Not affiliated with any real airline.</p>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+        <div class="mock-badge" aria-hidden="true">MOCK</div>
+      </div>
+    </header>
+
+    <div class="grid" aria-live="polite">
+      <!-- LEFT: Login / Quick Links -->
+      <aside class="card sidebar" aria-label="Sidebar">
+        <div class="login-box">
+          <h3 style="margin:0 0 4px 0">Staff login — Demo (no real auth)</h3>
+          <p class="muted" style="margin:0 0 12px 0">Enter any username to access the demo dashboard. This is a client-side prototype — do not enter real passwords.</p>
+          <label for="username">Crew ID / Username</label>
+          <input id="username" type="text" placeholder="e.g. C12345" aria-describedby="login-note"/>
+          <label for="password">Password (demo)</label>
+          <input id="password" type="password" placeholder="demo" />
+          <button id="loginBtn" aria-label="Login to demo portal">Enter Demo Portal</button>
+          <button id="guestBtn" class="secondary" style="margin-top:6px">Continue as Guest</button>
+
+          <hr style="margin:16px 0;border:none;border-top:1px solid #f1f5f9"/>
+          <div>
+            <h4 style="margin:0 0 8px 0;font-size:15px">Quick links</h4>
+            <ul style="padding-left:16px;margin:0;color:var(--muted);line-height:1.9">
+              <li>Roster & Schedules</li>
+              <li>Training modules</li>
+              <li>Incident reporting (demo)</li>
+              <li>Policies & manuals</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: Main -->
+      <section>
+        <div id="mainContent" class="card" tabindex="0">
+          <!-- Default welcome state before login -->
+          <div id="welcomeState">
+            <div class="top-actions">
+              <div>
+                <div class="small">Welcome to the DemoAir cabin crew training portal</div>
+                <div class="welcome">Portal is ready — sign in to view personalized data</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small">Demo environment</div>
+                <div style="font-weight:700;color:var(--muted)">No real data — mock content only</div>
+              </div>
+            </div>
+
+            <hr style="margin:14px 0;border:none;border-top:1px solid #f1f5f9"/>
+
+            <div class="row" style="margin-top:8px">
+              <div class="tile" style="min-width:220px">
+                <h4 style="margin:0 0 8px 0">Announcements</h4>
+                <p class="muted" style="margin:0 0 8px 0">Latest news for crew (demo):</p>
+                <ul style="margin:0;padding-left:18px;color:#111827">
+                  <li>Inflight service refresher | Module available</li>
+                  <li>Mock emergency drill scheduled — Sep 22, 2025</li>
+                  <li>Uniform feedback survey (demo)</li>
+                </ul>
+              </div>
+
+              <div class="tile" style="min-width:220px">
+                <h4 style="margin:0 0 8px 0">Training progress</h4>
+                <p class="muted" style="margin:0 0 10px 0">Complete required modules to earn refresher credit</p>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div style="flex:1">
+                    <div style="font-size:13px;margin-bottom:6px">Inflight Service</div>
+                    <progress value="60" max="100" style="width:100%;height:12px"></progress>
+                  </div>
+                  <div style="width:56px;text-align:right;font-weight:700">60%</div>
+                </div>
+              </div>
+
+              <div class="tile" style="min-width:180px">
+                <h4 style="margin:0 0 8px 0">Next duty</h4>
+                <div style="font-weight:700">DN123 — LHR → DXB</div>
+                <div class="muted">Departs: Sep 22, 2025 • Check-in: 02:30</div>
+              </div>
+            </div>
+
+            <section style="margin-top:14px">
+              <h3 style="margin:8px 0">Sample roster (demo)</h3>
+              <div style="overflow:auto;border-radius:8px">
+                <table aria-label="Sample roster table">
+                  <thead>
+                    <tr><th>Flight</th><th>Route</th><th>Date</th><th>Check-in</th><th>Role</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>DA101</td><td>NYC → LHR</td><td>2025-09-20</td><td>05:00</td><td>Purser</td><td><span class="status on">Confirmed</span></td></tr>
+                    <tr><td>DA123</td><td>LHR → DXB</td><td>2025-09-22</td><td>02:30</td><td>Senior FA</td><td><span class="status del">Standby</span></td></tr>
+                    <tr><td>DA211</td><td>DXB → BOM</td><td>2025-09-28</td><td>07:45</td><td>Flight Attendant</td><td><span class="status off">Off</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap">
+              <div style="flex:1;min-width:260px">
+                <h4 style="margin:0 0 8px 0">Training modules (demo)</h4>
+                <ol style="margin:0;padding-left:18px;color:var(--muted)">
+                  <li>Inflight Service Refresher</li>
+                  <li>Safety & Emergency Procedures</li>
+                  <li>First Aid Essentials</li>
+                  <li>Customer Care & Conflict Resolution</li>
+                </ol>
+              </div>
+              <div style="min-width:220px">
+                <h4 style="margin:0 0 8px 0">Contacts</h4>
+                <div class="muted">Ops Support (demo): ops-demo@demoair.example</div>
+                <div class="muted">Training: training-demo@demoair.example</div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Dashboard after login -->
+          <div id="dashboardState" style="display:none">
+            <div class="top-actions">
+              <div>
+                <div class="small">Welcome back, <span id="crewName">Crew</span></div>
+                <div class="welcome">Your personalized dashboard</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small">Role: <span id="crewRole">Flight Attendant</span></div>
+                <button id="logoutBtn" class="secondary" aria-label="Logout">Logout</button>
+              </div>
+            </div>
+
+            <hr style="margin:14px 0;border:none;border-top:1px solid #f1f5f9"/>
+
+            <div class="row" style="margin-top:8px">
+              <div class="tile">
+                <h4 style="margin:0 0 6px 0">Today</h4>
+                <div style="font-weight:700" id="todayDuty">No duty scheduled</div>
+                <div class="muted" id="todayDetails">Check your upcoming roster for assignments</div>
+              </div>
+
+              <div class="tile">
+                <h4 style="margin:0 0 6px 0">Completed modules</h4>
+                <div style="font-weight:700">3 / 5</div>
+                <div class="muted">Keep up the good work</div>
+              </div>
+
+              <div class="tile">
+                <h4 style="margin:0 0 6px 0">Last message</h4>
+                <div style="font-weight:700">Mock emergency drill — Sep 22, 2025</div>
+                <div class="muted">Please review the drill briefing</div>
+              </div>
+            </div>
+
+            <section style="margin-top:12px">
+              <h4 style="margin:6px 0">Your upcoming roster (mock)</h4>
+              <div style="overflow:auto;border-radius:8px">
+                <table aria-label="Your upcoming roster">
+                  <thead><tr><th>Flight</th><th>Route</th><th>Date</th><th>Check-in</th><th>Role</th><th>Status</th></tr></thead>
+                  <tbody id="userRoster">
+                    <!-- filled via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+        </div>
+
+        <footer class="muted">
+          This is a mock training portal for UI/prototyping only. Do not use real credentials. Designed for demonstration purposes.
+        </footer>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Demo JS: client-side only. No server calls. For training/prototyping.
+    const loginBtn = document.getElementById('loginBtn');
+    const guestBtn = document.getElementById('guestBtn');
+    const usernameInput = document.getElementById('username');
+    const welcomeState = document.getElementById('welcomeState');
+    const dashboardState = document.getElementById('dashboardState');
+    const crewNameEl = document.getElementById('crewName');
+    const crewRoleEl = document.getElementById('crewRole');
+    const userRoster = document.getElementById('userRoster');
+    const todayDuty = document.getElementById('todayDuty');
+    const todayDetails = document.getElementById('todayDetails');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    const sampleRoster = [
+      {flight:'DA101',route:'NYC → LHR',date:'2025-09-20',checkin:'05:00',role:'Purser',status:'Confirmed'},
+      {flight:'DA123',route:'LHR → DXB',date:'2025-09-22',checkin:'02:30',role:'Senior FA',status:'Standby'},
+      {flight:'DA211',route:'DXB → BOM',date:'2025-09-28',checkin:'07:45',role:'Flight Attendant',status:'Off'}
+    ];
+
+    function renderRoster(list){
+      userRoster.innerHTML = '';
+      list.forEach(r=>{
+        const tr = document.createElement('tr');
+        const statClass = r.status.toLowerCase() === 'confirmed' ? 'on' : (r.status.toLowerCase()==='standby' ? 'del' : 'off');
+        tr.innerHTML = `<td>${r.flight}</td><td>${r.route}</td><td>${r.date}</td><td>${r.checkin}</td><td>${r.role}</td><td><span class="status ${statClass}">${r.status}</span></td>`;
+        userRoster.appendChild(tr);
+      });
+    }
+
+    function doLogin(name){
+      crewNameEl.textContent = name || 'Crew Member';
+      crewRoleEl.textContent = 'Flight Attendant (demo)';
+      welcomeState.style.display = 'none';
+      dashboardState.style.display = 'block';
+      renderRoster(sampleRoster);
+      // pick 'next duty' if within roster
+      const next = sampleRoster.find(r=> new Date(r.date) >= new Date());
+      if(next){
+        todayDuty.textContent = next.flight + ' — ' + next.route;
+        todayDetails.textContent = `Date: ${next.date} • Check-in: ${next.checkin}`;
+      } else {
+        todayDuty.textContent = 'No upcoming duty (demo)';
+        todayDetails.textContent = 'You have no upcoming assignments in the demo roster.';
+      }
+      // focus for accessibility
+      document.getElementById('mainContent').focus();
+    }
+
+    loginBtn.addEventListener('click', ()=>{
+      const name = usernameInput.value.trim() || 'Demo Crew';
+      alert('Demo login — no real authentication. This environment is for training only.');
+      doLogin(name);
+    });
+    guestBtn.addEventListener('click', ()=>{
+      alert('Continuing as Guest — limited demo access.');
+      doLogin('Guest Crew');
+    });
+    logoutBtn.addEventListener('click', ()=>{
+      dashboardState.style.display = 'none';
+      welcomeState.style.display = 'block';
+      usernameInput.value = '';
+      document.getElementById('mainContent').focus();
+    });
+
+    // Accessibility tip: allow Enter to trigger login
+    usernameInput.addEventListener('keypress', (e)=>{
+      if(e.key === 'Enter') loginBtn.click();
+    });
+
+    // Initialize: keep welcome visible
+    welcomeState.style.display = 'block';
+    dashboardState.style.display = 'none';
+  </script>
+</body>
+</html>
