@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket File Uploader</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        input, button { margin: 5px 0; padding: 8px; }
+        .status-box { border: 1px solid #ccc; padding: 10px; min-height: 100px; overflow-y: scroll; margin-top: 10px; }
+        #connection-status { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>WebSocket File Upload Test</h1>
+
+    <div>
+        <label for="websocket-url">WebSocket URL:</label>
+        <input type="text" id="websocket-url" value="ws://localhost:8080" placeholder="e.g., ws://localhost:8080" />
+        <button onclick="connect()">Connect</button>
+        <button onclick="closeConnection()">Disconnect</button>
+    </div>
+
+    <div>
+        <label for="file-input">Select a file:</label>
+        <input type="file" id="file-input" />
+        <button onclick="uploadFile()">Upload</button>
+    </div>
+
+    <div class="status-box">
+        <p><b>Connection Status:</b> <span id="connection-status">Not connected</span></p>
+        <p><b>Log:</b></p>
+        <ul id="log"></ul>
+    </div>
+
+    <script>
+        let ws;
+        const logElement = document.getElementById('log');
+        const connectionStatusElement = document.getElementById('connection-status');
+        const wsUrlInput = document.getElementById('websocket-url');
+
+        function logMessage(message, color = 'black') {
+            const li = document.createElement('li');
+            li.style.color = color;
+            li.textContent = message;
+            logElement.appendChild(li);
+        }
+
+        function updateStatus(status, color = 'black') {
+            connectionStatusElement.textContent = status;
+            connectionStatusElement.style.color = color;
+        }
+
+        function connect() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                logMessage('Already connected.', 'orange');
+                return;
+            }
+            const wsUrl = wsUrlInput.value;
+            ws = new WebSocket(wsUrl);
+            ws.binaryType = 'arraybuffer'; // Crucial for sending binary file data
+
+            ws.onopen = () => {
+                updateStatus('Connected', 'green');
+                logMessage('Connection established.', 'green');
+            };
+
+            ws.onmessage = (event) => {
+                logMessage(`Server message: ${event.data}`);
+            };
+
+            ws.onclose = (event) => {
+                updateStatus('Disconnected', 'red');
+                if (event.wasClean) {
+                    logMessage(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`, 'blue');
+                } else {
+                    logMessage('Connection died unexpectedly.', 'red');
+                }
+            };
+
+            ws.onerror = (error) => {
+                logMessage(`WebSocket Error: ${error}`, 'red');
+            };
+
+            updateStatus('Connecting...', 'blue');
+        }
+
+        function closeConnection() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                logMessage('Please select a file first.', 'orange');
+                return;
+            }
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                logMessage('WebSocket not connected. Please connect first.', 'red');
+                return;
+            }
+
+            logMessage(`Starting upload of file: ${file.name}`);
+
+            // A common method is to send metadata first, then the binary data
+            const metadata = JSON.stringify({
+                type: 'file-upload',
+                fileName: file.name,
+                fileSize: file.size,
+            });
+            ws.send(metadata);
+
+            const CHUNK_SIZE = 16384; // Chunk size can be adjusted for performance
+            let offset = 0;
+
+            function sendNextChunk() {
+                if (offset < file.size) {
+                    const chunk = file.slice(offset, offset + CHUNK_SIZE);
+                    ws.send(chunk);
+                    offset += chunk.size;
+                    logMessage(`Sending chunk: ${((offset / file.size) * 100).toFixed(2)}%`, 'gray');
+                    // Add a delay to avoid overwhelming the server, if necessary
+                    // setTimeout(sendNextChunk, 10); 
+                } else {
+                    logMessage('File upload complete!', 'green');
+                }
+            }
+
+            // Start sending the first chunk after sending metadata
+            setTimeout(sendNextChunk, 100);
+        }
+    </script>
+</body>
+</html>
